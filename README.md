@@ -1,1 +1,1 @@
-This is the backend server for the project HAI
+This is the Webpage client for the project HAI
