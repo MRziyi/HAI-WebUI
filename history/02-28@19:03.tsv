@@ -1,0 +1,4 @@
+"19:03:40"	"WS CONNECTED"	""
+"19:03:40"	"config/info"	"{"task_name": "旅行规划", "task_req": "旅行规划: 我想要与我的朋友想要前往南京分别参加一个展会，在展会时间外我们也想到一同在南京进行观光，旅行时间是9月10日-9月12日共3天，我需要根据自己与朋友的喜好，考虑时间安排、交通、餐饮、住宿、预算等重要的因素，制定平衡合理的行程安排。\n\n 我选择：金陵动漫展 时间：9月10日 14:00 - 20:00 地点：南京国际展览中心\n 我的朋友选择：南京艺术博览会 时间：9月10日 13:00 - 20:00 地点：南京文化艺术中心", "agent_list": [{"name": "Assistant", "avatar": "😉", "system_message": "You are a helpful Assistant, ready to fulfill the user's requests and provide assistance as needed.", "chinese_name": "小助手"}], "step_list": []}"
+"19:04:02"	"process/start_plan"	""{}""
+"19:04:09"	"WS DISCONNECTED"	""
