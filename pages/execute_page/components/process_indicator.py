@@ -6,13 +6,12 @@ from panel.viewable import Viewer
 pn.extension()  # for notebook
 
 class ProcessIndicator(Viewer):
-    current_task = param.Integer(default=1)
     steps=param.List()
 
     def __init__(self, **params):
         super().__init__(**params)
         self._markdown = pn.pane.Markdown(sizing_mode='stretch_both')
-        self._sync_markdown()
+        self.refresh_process_list(0)
         self._layout = pn.Column(self._markdown,
             sizing_mode='stretch_both',
             scroll=True)
@@ -20,14 +19,13 @@ class ProcessIndicator(Viewer):
     def __panel__(self):
         return self._layout
 
-    @param.depends('current_task', watch=True)
-    def _sync_markdown(self):
+    def refresh_process_list(self,index):
         content = ""
         for i, task in enumerate(self.steps):
-            if i < self.current_task - 1:
+            if i < index - 1:
                 status = f"### 🟢 {i+1}."
                 state = "[已完成]"
-            elif i == self.current_task - 1:
+            elif i == index - 1:
                 status = f"## 🟡 {i+1}."
                 state = "[进行中]"
             else:
@@ -35,6 +33,7 @@ class ProcessIndicator(Viewer):
                 state = "[待办]"
             
             content += f"{status} {task['name']} {state}\n"
-            content += f"{task['content']}\n---\n\n"
+            content += f"{task['content']}"
+            content += "\n\n---\n\n"
 
         self._markdown.object = content

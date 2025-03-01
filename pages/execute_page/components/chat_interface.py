@@ -77,7 +77,7 @@ class ChatInterface(Viewer):
             source_name = message.get("source_name")
             recipient_name = message.get("recipient_name")
             self.content += f"## {self.avatars.get(source_name)} {source_name} → {self.avatars.get(recipient_name)} {recipient_name}\n"
-            self.content += message["content"] + "\n\n---\n---\n\n"
+            self.content += message["content"] + "\n\n---\n\n"
         self._markdown.object = self.content
 
     def add_message(self, content, source_name, recipient_name):

@@ -56,7 +56,7 @@ async def recv_from_server_listener(ws_manager: WebSocketManager):
 
         elif type == "process/update":
             current_step = json_data.get("current_step")
-            global_vars.execute_page.steps = current_step
+            global_vars.execute_page.progress_indicator.refresh_process_list(current_step)
 
 async def websocket_connection():
     async with websockets.connect(ws_url) as websocket:
