@@ -1,16 +1,20 @@
-import argparse
 import asyncio
 import json
-import sys
 import websockets
 import panel as pn
-import uvicorn
-
-from autogen_agentchat.messages import TextMessage
-from autogen_core import CancellationToken
 import global_vars
 from pages.execute_page.components.websocket_manager import WebSocketManager
 from pages.execute_page.execute_page import ExecutePage
+
+
+ws_url="ws://localhost:8002/ws"
+
+
+css = """
+#input{
+  font-size: 120%;
+}
+"""
 
 async def send_to_server_listener(ws_manager: WebSocketManager):
     while True:
@@ -28,7 +32,6 @@ async def recv_from_server_listener(ws_manager: WebSocketManager):
                 json_data = json.loads(data)
             except:
                 json_data=data
-                print("JSON Data: "+str(data))
         except Exception as e:
             print("raw_data decode ERROR: "+str(e))
         
@@ -40,9 +43,20 @@ async def recv_from_server_listener(ws_manager: WebSocketManager):
             
             global_vars.execute_page = ExecutePage(task_name=task_name,task_req=task_req,agents=agent_list,steps=step_list,ws_manager=ws_manager)
             global_vars.app_layout[:] = [global_vars.execute_page]
-          
 
-ws_url="ws://localhost:8002/ws"
+        elif type == "agent/talk":
+            sender_name = json_data.get("from")
+            recipient_name = json_data.get("to")
+            chat_content = json_data.get("chat")
+            global_vars.execute_page.chat_interface.add_message(content=chat_content,source_name=sender_name,recipient_name=recipient_name)
+        
+        elif type == "agent/req_ans":
+                req_agent_name = json_data.get("from")
+                global_vars.execute_page.chat_interface.agent_req_answer(req_agent_name)
+
+        elif type == "process/update":
+            current_step = json_data.get("current_step")
+            global_vars.execute_page.steps = current_step
 
 async def websocket_connection():
     async with websockets.connect(ws_url) as websocket:
@@ -58,11 +72,6 @@ async def websocket_connection():
         except Exception as e:
             print("ERROR:", str(e))
 
-css = """
-#input{
-  font-size: 120%;
-}
-"""
 pn.extension(raw_css=[css])
 
 asyncio.create_task(websocket_connection())

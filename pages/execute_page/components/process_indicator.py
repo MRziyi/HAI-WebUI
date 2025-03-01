@@ -26,15 +26,15 @@ class ProcessIndicator(Viewer):
         for i, task in enumerate(self.steps):
             if i < self.current_task - 1:
                 status = f"### 🟢 {i+1}."
-                state = "[Completed]"
+                state = "[已完成]"
             elif i == self.current_task - 1:
                 status = f"## 🟡 {i+1}."
-                state = "[In Progress]"
+                state = "[进行中]"
             else:
                 status = f"### 🔴 {i+1}."
-                state = "[To Do]"
+                state = "[待办]"
             
             content += f"{status} {task['name']} {state}\n"
-            content += f"{task['content']}\n\n"
+            content += f"{task['content']}\n---\n\n"
 
         self._markdown.object = content

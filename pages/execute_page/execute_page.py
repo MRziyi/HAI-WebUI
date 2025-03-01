@@ -20,7 +20,6 @@ class ExecutePage(pn.viewable.Viewer):
                 "type": type,
                 "data": data
             },ensure_ascii=False, indent=4)))
-        self.ws_manager.log(type,json.dumps(data,ensure_ascii=False))
         
 
     def __init__(self, **params):
@@ -38,16 +37,16 @@ class ExecutePage(pn.viewable.Viewer):
             scroll=True
         )
         
-        agent_card = pn.Card(agent_card_content, sizing_mode='stretch_height',title='Agents分配',margin=(0, 10, 0, 0), width=350)
+        agent_card = pn.Card(agent_card_content, sizing_mode='stretch_height',title='智能体分配',margin=(0, 10, 0, 0), width=350)
 
 
         global_vars.progress_indicator = ProcessIndicator(steps=self.steps)
-        process_card = pn.Card(global_vars.progress_indicator, title='Process Indicator', sizing_mode='stretch_height',margin=(10, 10, 0, 0), width=350)
+        process_card = pn.Card(global_vars.progress_indicator, title='进度指示', sizing_mode='stretch_height',margin=(10, 10, 0, 0), width=350)
         info_card = pn.Column(agent_card,process_card)        
         
-        global_vars.chat_interface=ChatInterface(agents=self.agents)
+        self.chat_interface=ChatInterface(agents=self.agents)
 
-        self._layout = pn.Row(info_card, global_vars.chat_interface)
+        self._layout = pn.Row(info_card, self.chat_interface)
 
 
     def __panel__(self):
