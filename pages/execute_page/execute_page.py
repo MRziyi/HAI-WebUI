@@ -27,7 +27,7 @@ class ExecutePage(pn.viewable.Viewer):
 
         confirmed_agents = f"## 任务「{self.task_name}」的Agents分配\n"
         for agent in self.agents:
-            confirmed_agents += f'### {agent["avatar"]} {agent["name"]}\n'
+            confirmed_agents += f'### {agent["avatar"]} {agent["chinese_name"]}\n'
             confirmed_agents += agent["system_message"] + "\n\n---\n\n"
         
         agent_card_content = pn.Column(

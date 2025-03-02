@@ -146,12 +146,12 @@ class STTEngine():
         ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE}, ping_timeout=2)
 
 
-    def start_stop_recognition(self,event):
+    def start_stop_recognition(self,event=None):
         if self.is_recording:
             if ws:
                 ws.close()
             self.start_stop_button.icon = 'microphone'
-            self.start_stop_button.button_type = 'primary'
+            self.start_stop_button.button_type = 'success'
         else:
             thread.start_new_thread(self.run, ())
             self.start_stop_button.icon = 'microphone-off'
