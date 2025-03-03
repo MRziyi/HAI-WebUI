@@ -7,7 +7,7 @@ from pages.execute_page.components.websocket_manager import WebSocketManager
 from pages.execute_page.execute_page import ExecutePage
 
 
-ws_url="ws://43.163.83.187:8000/ws"
+ws_url="ws://localhost:8000/ws"
 
 
 css = """

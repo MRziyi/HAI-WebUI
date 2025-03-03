@@ -65,8 +65,6 @@ class ChatInterface(Viewer):
         self.avatars["User"] = "😉"
         self._markdown = pn.pane.Markdown(sizing_mode='stretch_both')
 
-        self.refresh_messages()
-
         self.text_input = pn.widgets.TextAreaInput(placeholder="请点击右侧黄色按钮开始交互",disabled=True,sizing_mode='stretch_both',resizable='width')
         self.send_button = pn.widgets.Button(button_type='warning', icon="player-play",icon_size="25px",sizing_mode='stretch_height',width=50)
         self.send_button.on_click(self.chat_send)
@@ -82,6 +80,7 @@ class ChatInterface(Viewer):
             for agent in self.agents
         ]
         self.target = ''
+        self.content = ''
 
         self.radio_group = pn.widgets.RadioButtonGroup(options=[option['content'] for option in self.target_content_pair], button_type='primary',button_style='outline',sizing_mode='stretch_width',height=30,disabled=True,value='EMPTY')
         self.radio_group.param.watch(self.on_radio_group_change, "value")
@@ -112,25 +111,24 @@ class ChatInterface(Viewer):
                 break
         self.radio_group.options=[option['content'] for option in self.target_content_pair]
 
-    def refresh_messages(self):
-        self.content=""
-        for message in self.messages:
-            source_name = message.get("source_name")
-            recipient_name = message.get("recipient_name")
-            self.content += f"## {self.avatars.get(source_name)} {source_name} → {self.avatars.get(recipient_name)} {recipient_name}\n"
-            self.content += message["content"] + "\n\n---\n\n"
-        self._markdown.object = self.content
 
     def add_message(self, content, source_name, recipient_name):
-        self.messages.append({'content':content,'source_name':source_name,'recipient_name':recipient_name})
-        source_chinese_name="用户"
-        recipient_chinese_name="用户"
+        # 将新消息插入到 messages 列表的开头
+        self.messages.insert(0, {'content': content, 'source_name': source_name, 'recipient_name': recipient_name})
+        
+        source_chinese_name = "用户"
+        recipient_chinese_name = "用户"
         for agent in self.agents:
-            if agent['name']==source_name:
-                source_chinese_name=agent["chinese_name"]
-            if agent['name']==recipient_name:
-                recipient_chinese_name=agent['chinese_name']
-        self.content += f"## {self.avatars.get(source_name)} {source_chinese_name} → {self.avatars.get(recipient_name)} {recipient_chinese_name}\n"
-        self.content += content+ "\n\n---\n\n"
+            if agent['name'] == source_name:
+                source_chinese_name = agent["chinese_name"]
+            if agent['name'] == recipient_name:
+                recipient_chinese_name = agent['chinese_name']
+        
+        # 构造新消息的字符串内容
+        new_message = f"## {self.avatars.get(source_name)} {source_chinese_name} → {self.avatars.get(recipient_name)} {recipient_chinese_name}\n"
+        new_message += content + "\n\n---\n\n"
+        
+        # 将新消息放到原有内容之前
+        self.content = new_message + self.content
         self._markdown.object = self.content
         return
