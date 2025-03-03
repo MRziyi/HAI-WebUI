@@ -44,7 +44,7 @@ class ChatInterface(Viewer):
             self.text_input.disabled=True
             self.text_input.placeholder="请先选择你要交互的智能体"
             for option in self.target_content_pair:
-                option['content'] = option['content'].replace(' [⏳等待您的回复]', '')
+                option['content'] = option['content'].replace(' [⏳]', '')
             self.radio_group.options = [option['content'] for option in self.target_content_pair]
         elif not value:
             return
@@ -108,7 +108,7 @@ class ChatInterface(Viewer):
     def agent_req_answer(self,req_agent_name):
         for option in self.target_content_pair:
             if option['target'] == req_agent_name:
-                option['content'] +=' [⏳等待您的回复]'
+                option['content'] +=' [⏳]'
                 break
         self.radio_group.options=[option['content'] for option in self.target_content_pair]
 
