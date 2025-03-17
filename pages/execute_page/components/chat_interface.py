@@ -24,6 +24,9 @@ class ChatInterface(Viewer):
             pass
         else:
             target_name=next((target_content['target'] for target_content in self.target_content_pair if self.radio_group.value == target_content['content']), None)
+            if not target_name:
+                print(f'Agent Not Found! Value: {self.radio_group.value}')
+                target_name='ProcessManager'
             global_vars.execute_page.send_to_server("user/talk",json.dumps(
             {
                 "content": self.text_input.value,
